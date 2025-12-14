@@ -29,5 +29,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <li><a href="yes.html">YES</a>   </li>
         <li><a href="no.html">NO</a></li>
       </ul>
+     <button onclick="googleLogin()">Login with Google</button>
+     <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDFq5ZZQhmQZo7cjvGjroB2W7qGGs9R_j0",
+    authDomain: "shayak1website.firebaseapp.com",
+    projectId: "shayak1website",
+    storageBucket: "shayak1website.firebasestorage.app",
+    messagingSenderId: "504725803750",
+    appId: "1:504725803750:web:7ad2679c7c87ea362ee127"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  const auth = firebase.auth();
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  function googleLogin() {
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        alert("Login successful 😄");
+        console.log(result.user);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }
+</script>
 </body>
 </html>
