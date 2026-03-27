@@ -1,0 +1,98 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENCYPTER PRO</title>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+</head>
+<body>
+    <div>
+        <p style="color: red; text-align: center;">ENCYPTER PRO</p>
+    </div>
+    <div> <input type="text" id="data" placeholder="ENTER YOUR DATA"></div>
+    <div><input type="text" id="key" placeholder="ENTER KEY HERE"></div>
+    <div><input type="text" id="seed" placeholder="ENTER SEED OR REMEMBER IT"></div>
+    <div><input type="text" id="status" placeholder="VIWE STATUS HERE"></div>
+    <div><input type="text" id="pd" placeholder="PROcessed DATA"></div>
+    <div> 
+        <select id="choice">
+            <option value="1">1. ENCRYPTER</option>
+            <option value="2">2. DECRYPTER</option>
+        </select>
+        <button py-click="process">START PROCESS</button>
+    </div>
+
+<script type="py">
+import random as r
+from datetime import datetime
+from pyscript import document
+
+def process(event):
+    def keys(key):
+        a2 = 0
+        for i in key:
+            a2 += ord(i)
+        return a2
+
+    def enc():
+        key = document.querySelector("#key").value
+        data = document.querySelector("#data").value
+        e = ""
+        e1 = ""
+        k1 = keys(key)
+        s = datetime.now().hour
+        r.seed(s)
+        k = r.randint(1, 1000)
+        
+        document.querySelector("#seed").value = str(s)
+
+        for i in data:
+            a = ord(i)
+            b = a ^ (2 * k + k * k1) % 15887
+            e += chr(b)
+
+        for i in e:
+            a = ord(i)
+            b = a ^ (4 * k1 + k) % 3424
+            e1 += chr(b)
+
+        document.querySelector("#status").value = "ENCRYPTION COMPLETE"
+        document.querySelector("#pd").value = e1
+
+    def dec():
+        e1_input = document.querySelector("#data").value
+        d = ""
+        d1 = ""
+        key = document.querySelector("#key").value
+        s_val = int(document.querySelector("#seed").value)
+        r.seed(s_val)
+        k = r.randint(1, 1000)
+        k1 = keys(key)
+
+        for i in e1_input:
+            a = ord(i)
+            b = a ^ (4 * k1 + k) % 3424
+            d += chr(b)
+
+        for i in d:
+            a = ord(i)
+            b = a ^ (2 * k + k * k1) % 15887
+            d1 += chr(b)
+
+        document.querySelector("#status").value = "DECRYPTION COMPLETE"
+        document.querySelector("#pd").value = d1
+
+    # Choice check
+    ch = document.querySelector("#choice").value
+    if ch == "1":
+        enc()
+    elif ch == "2":
+        dec()
+    else:
+        document.querySelector("#status").value = "INVALID CHOICE"
+
+</script>
+</body>
+</html>
